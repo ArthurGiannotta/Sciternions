@@ -18,14 +18,21 @@ for script = build_dir + scripts do
 
         if tabulation then
             if line == slower then
-                should_write = ~fastmode
+                if expr1 then
+                    should_write = ~fastmode
+                else
+                    should_write = fastmode
+                end
             elseif line == ender then
                 tabulation = []
             elseif should_write then
                 fast_content($+1) = part(line, 5:$)
             end
         else
-            tabulation = strindex(line, "if SCITERNIONS_FASTMODE")
+            expr1 = strindex(line, "if SCITERNIONS_FASTMODE")
+            expr2 = strindex(line, "if ~SCITERNIONS_FASTMODE")
+            
+            tabulation = [expr1, expr2]
             if tabulation then
                 if tabulation > 1 then
                     tab = strcat(repmat(" ", tabulation - 1, 1))
@@ -35,7 +42,12 @@ for script = build_dir + scripts do
 
                 slower = tab + "else"
                 ender = tab + "end"
-                should_write = fastmode
+
+                if expr1 then
+                    should_write = fastmode
+                else
+                    should_write = ~fastmode
+                end
             else
                 fast_content($+1) = line
             end
@@ -47,3 +59,5 @@ for script = build_dir + scripts do
     deletefile(script)
     write(script, fast_content)
 end
+
+clear("scripts", "script", "script_file", "content", "fast_content", "expr1", "expr2", "tabulation", "i", "line", "tab", "slower", "ender", "should_write")

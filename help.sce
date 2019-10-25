@@ -20,3 +20,6 @@ xmltojar()
 
 // Opens the help window
 help("SciTernions")
+
+// Clears script variables
+clear("script_dir", "help_dir", "source_dir", "ans")

@@ -19,3 +19,9 @@ exec(script_dir + "fastmode.sce", -1)
 
 // Generates the library
 genlib("SciTernions", build_dir, %t)
+
+// Deletes .sci files from build directory
+// TBD
+
+// Clears script variables
+clear("script_dir", "build_dir", "source_dir", "fastmode", "ans")

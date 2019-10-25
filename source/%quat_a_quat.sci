@@ -27,9 +27,5 @@ function r = %quat_a_quat(x, y)
     // Authors
     //  Arthur Clemente Giannotta ;
 
-    if SCITERNIONS_FASTMODE then
-        r = x; r(2) = r(2) + y(2); r(3) = r(3) + y(3)
-    else
-        r = quat(x.real + y.real, x.imag + y.imag)
-    end
+    r = tlist(["quat", "real", "imag"], x.real + y.real, x.imag + y.imag)
 endfunction
