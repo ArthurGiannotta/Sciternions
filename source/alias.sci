@@ -28,7 +28,7 @@ function out = alias(func, args)
     if n == 0 then
         out = func()
     else
-        if SCITERNIONS_FASTMODE then
+        if %fastmode then
             select n
             case 1 then
                 out = func(args(1))

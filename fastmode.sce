@@ -29,8 +29,8 @@ for script = build_dir + scripts do
                 fast_content($+1) = part(line, 5:$)
             end
         else
-            expr1 = strindex(line, "if SCITERNIONS_FASTMODE")
-            expr2 = strindex(line, "if ~SCITERNIONS_FASTMODE")
+            expr1 = strindex(line, "if %fastmode")
+            expr2 = strindex(line, "if ~%fastmode")
             
             tabulation = [expr1, expr2]
             if tabulation then

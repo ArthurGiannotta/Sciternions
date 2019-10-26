@@ -7,7 +7,7 @@ function check_args(func, varargin)
     // Parameters
     // func: string, the syntax of the function
     // argi: array, the i-th argument received by the function
-    // typei: type array, the type that the i-th argument should be of
+    // typei: type array, the type that the i-th argument must be of
     //
     // Description
     // Checks whether the types of the arguments of a function are valid, given a type checklist. For example, if you receive the error message "add(a, b, c): Argument checking failed for argument 2", it means the second argument 'b' of the function 'add' has an invalid type.
@@ -36,7 +36,7 @@ function check_args(func, varargin)
         end
 
         if type1 ~= type2 then
-            error(func + ": Argument checking failed for argument " + string(i / 2) + ". Type is " + string(type1) + ", but should be " + string(type2) + ".")
+            error(func + ": Argument checking failed for argument " + string(i / 2) + ". Type is " + string(type1) + ", but must be " + string(type2) + ".")
         end
     end
 endfunction

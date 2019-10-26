@@ -28,7 +28,7 @@ function r = %quat_s_s(q, s)
     // Authors
     //  Arthur Clemente Giannotta ;
 
-    if ~SCITERNIONS_FASTMODE then
+    if ~%fastmode then
         if get_type(s).data(2) > %vector.data(2) then
             error("%quat_s_s(quat, s): Can''t subtract a matrix/hypermatrix from a quaternion.")
         end

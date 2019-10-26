@@ -10,7 +10,7 @@ function setup_sciternions(arguments)
     // Examples
     // clear()
     // load("SciTernions/build")
-    // setup_sciternions()
+    // setup_sciternions(epsilon = 10e-6)
     // predef("all")
     //
     // Authors
@@ -43,13 +43,22 @@ function setup_sciternions(arguments)
     %false = %f
     %true = %t
 
-    // Global configuration
-    if SCITERNIONS_FASTMODE then
-        SCITERNIONS_FASTMODE = %t
+    // Fastmode configuration (chosen at compilation time)
+    if %fastmode then
+        %fastmode = %true
     else
-        SCITERNIONS_FASTMODE = %f
+        %fastmode = %false
     end
-    // SCITERNIONS_FASTMODE = exists('fastmode') && fastmode // deprecated, fastmode is implemented at compilation time
+
+    // SciTernions configuration
+    if exists('epsilon') then
+        %epsilon = epsilon
+        clear('epsilon')
+    else
+        %epsilon = %eps
+    end
+
+    // %fastmode = exists('fastmode') && fastmode // deprecated, fastmode is implemented at compilation time
 
     // Adds the setup variables to the global context
     variables = strcat(setdiff(who("local"), context), ",")

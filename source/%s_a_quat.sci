@@ -28,7 +28,7 @@ function r = %s_a_quat(s, q)
     // Authors
     //  Arthur Clemente Giannotta ;
 
-    if ~SCITERNIONS_FASTMODE then
+    if ~%fastmode then
         if get_type(s).data(2) > %vector.data(2) then
             error("%s_a_quat(s, quat): Can''t add a matrix/hypermatrix with a quaternion.")
         end

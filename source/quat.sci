@@ -9,17 +9,17 @@ function q = quat(varargin)
     //   q = quat()
     //
     // Parameters
-    // q: quaternion, quaternion to be created
-    // a: real, real part
-    // b: real, first imaginary part
-    // c: real, second imaginary part
-    // d: real, third imaginary part
-    // v: vector, imaginary part
-    // abcd: vector, real and imaginary parts
-    // q0: quaternion, quaternion to copy
+    // q: quaternion, the quaternion to be created
+    // a: real, the real part
+    // b: real, the first imaginary part
+    // c: real, the second imaginary part
+    // d: real, the third imaginary part
+    // v: vector, the imaginary part
+    // abcd: vector, the real and imaginary parts
+    // q0: quaternion, the quaternion to copy
     //
     // Description
-    // Generates an object of the quaternion class.
+    // Generates an object of the quaternion class. It is basically a typed list with name "quat" and elements "real" and "imag", which contains, respectively, the real and imaginary parts of the quaternion.
     //
     // Examples
     // q0 = quat(0, 1, 0, 0)
@@ -30,7 +30,7 @@ function q = quat(varargin)
     //
     // See also
     //  quaternion
-    //  rotate
+    //  rquat
     //
     // Authors
     //  Arthur Clemente Giannotta ;
@@ -42,7 +42,7 @@ function q = quat(varargin)
 
     select inputs
     case 4 then // quat(a, b, c, d)
-        if SCITERNIONS_FASTMODE then
+        if %fastmode then
             q = tlist(["quat", "real", "imag"], varargin(1), [varargin(2), varargin(3), varargin(4)])
         else
             a = varargin(1)
@@ -55,7 +55,7 @@ function q = quat(varargin)
             q = tlist(["quat", "real", "imag"], a, [b, c, d])
         end
     case 2 then // quat(a, v)
-        if SCITERNIONS_FASTMODE then
+        if %fastmode then
             q = tlist(["quat", "real", "imag"], varargin(1), varargin(2))
         else
             a = varargin(1)
@@ -64,10 +64,10 @@ function q = quat(varargin)
             check_args("quat(a, v)", a, %real, v, %vector)
             if length(v) == 3 then
                 if get_type(v(1)) ~= %real || get_type(v(2)) ~= %real || get_type(v(3)) ~= %real then
-                    error("quat(a, v): Argument checking failed for argument 2. The imaginary part should have real components.")
+                    error("quat(a, v): Argument checking failed for argument 2. The imaginary part must have real components.")
                 end
             else
-                error("quat(a, v): Argument checking failed for argument 2. The imaginary part should have 3 components.")
+                error("quat(a, v): Argument checking failed for argument 2. The imaginary part must have 3 components.")
             end
 
             q = tlist(["quat", "real", "imag"], a, v)
@@ -77,17 +77,17 @@ function q = quat(varargin)
         ty = get_type(in)
 
         if ty == %vector then // quat(abcd)
-            if SCITERNIONS_FASTMODE then
+            if %fastmode then
                 q = tlist(["quat", "real", "imag"], in(1), in(2:4))
             else
                 abcd = in
 
                 if length(abcd) == 4 then
                     if get_type(abcd(1)) ~= %real || get_type(abcd(2)) ~= %real || get_type(abcd(3)) ~= %real || get_type(abcd(4)) ~= %real then
-                        error("quat(abcd): Argument checking failed for argument 1. The quaternion should have real components.")
+                        error("quat(abcd): Argument checking failed for argument 1. The quaternion must have real components.")
                     end
                 else
-                    error("quat(abcd): Argument checking failed for argument 1. The quaternion should have 4 components.")
+                    error("quat(abcd): Argument checking failed for argument 1. The quaternion must have 4 components.")
                 end
 
                 q = tlist(["quat", "real", "imag"], abcd(1), abcd(2:4))

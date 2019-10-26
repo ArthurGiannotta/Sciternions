@@ -9,17 +9,17 @@ function q = quaternion(varargin)
     //   q = quaternion()
     //
     // Parameters
-    // q: quaternion, quaternion to be created
-    // a: real, real part
-    // b: real, first imaginary part
-    // c: real, second imaginary part
-    // d: real, third imaginary part
-    // v: vector, imaginary part
-    // abcd: vector, real and imaginary parts
-    // q0: quaternion, quaternion to copy
+    // q: quaternion, the quaternion to be created
+    // a: real, the real part
+    // b: real, the first imaginary part
+    // c: real, the second imaginary part
+    // d: real, the third imaginary part
+    // v: vector, the imaginary part
+    // abcd: vector, the real and imaginary parts
+    // q0: quaternion, the quaternion to copy
     //
     // Description
-    // Generates an object of the quaternion class. This is an alias for the function 'quat'.
+    // This is an alias for the function 'quat'. Go see its documentation for full details.
     //
     // See also
     //  quat

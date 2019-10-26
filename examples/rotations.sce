@@ -1,13 +1,17 @@
-if ~exists("sciternions") then
-    // Loads the SciTernions library
-    sciternions = lib(get_absolute_file_path("rotations.sce") + "../build")
+// Imports the SciTernions library
+exec(get_absolute_file_path("rotations.sce") + "import_sciternions.sce")
 
-    // Setups the SciTernions library
-    setup_sciternions()
-    predef("all")
-end
+x = [1, 1, 1] // Vector to be rotated
 
-// Makes a vector to rotate and a rotation quaternion
-x = [1, 0, 0]
+// Display the vector before the rotation
+
+theta = 45 // Angle in degrees
+n = [1, 0, 0] // Axis of rotation
+q = rotation_quaternion_degrees(theta, n) // Quaternion that represents the rotation
+//q = rquatd(theta, n) // This line does the same thing as the line above
 
 // Applies the rotation
+//x = rotate()
+
+// Display the vector after the rotation
+

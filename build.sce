@@ -5,7 +5,7 @@ script_dir = get_absolute_file_path("build.sce")
 // Configuration
 build_dir = script_dir + "build/"
 source_dir = script_dir + "source/"
-fastmode = %t
+fastmode = %f
 
 // Recreates the build directory
 removedir(build_dir)
