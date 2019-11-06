@@ -1,16 +1,17 @@
-function r = %quat_s_quat(x, y)
+function r = %quat_s_quat(p, q)
     // Quaternion-quaternion subtraction.
     //
     // Syntax
     //   result = %quat_s_quat(quat1, quat2)
     //
     // Parameters
-    // result: quaternion, the difference between the quaternions
+    // result: quaternion, the difference between the operands
     // quat1: quaternion, the first operand
     // quat2: quaternion, the second operand
     //
     // Description
     // The difference between two quaternions is defined as the quaternion which has each component equal to the difference of the operands components.
+    //
     // <latex>$(A,\ B,\ C,\ D) - (a,\ b,\ c,\ d) = (A-a,\ B-b,\ C-c,\ D-d)$</latex>
     //
     // Examples
@@ -27,5 +28,5 @@ function r = %quat_s_quat(x, y)
     // Authors
     //  Arthur Clemente Giannotta ;
 
-    r = tlist(["quat", "real", "imag"], x.real - y.real, x.imag - y.imag)
+    r = tlist(["quat", "real", "imag"], p.real - q.real, p.imag - q.imag)
 endfunction

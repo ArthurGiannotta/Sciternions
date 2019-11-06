@@ -3,8 +3,11 @@ function q = quat(varargin)
     //
     // Syntax
     //   q = quat(a, b, c, d)
-    //   q = quat(a, v)
+    //   q = quat(a, bcd)
     //   q = quat(abcd)
+    //   q = quat(bcd)
+    //   q = quat(bc)
+    //   q = quat(ab)
     //   q = quat(q0)
     //   q = quat()
     //
@@ -14,19 +17,24 @@ function q = quat(varargin)
     // b: real, the first imaginary part
     // c: real, the second imaginary part
     // d: real, the third imaginary part
-    // v: vector, the imaginary part
     // abcd: vector, the real and imaginary parts
+    // bcd: vector, the imaginary part
+    // bc: vector, the first and second imaginary parts
+    // ab: complex, the real and first imaginary parts
     // q0: quaternion, the quaternion to copy
     //
     // Description
     // Generates an object of the quaternion class. It is basically a typed list with name "quat" and elements "real" and "imag", which contains, respectively, the real and imaginary parts of the quaternion.
     //
     // Examples
-    // q0 = quat(0, 1, 0, 0)
-    // q1 = quat(0, [1, 0, 0])
-    // q2 = quat([0, 1, 0, 0])
-    // q3 = quat(q2)
-    // q4 = quat()
+    // q = quat(0, 1, 0, 0)
+    // q = quat(0, [1, 0, 0])
+    // q = quat([0, 1, 0, 0])
+    // q = quat([1, 0, 0])
+    // q = quat([1, 0])
+    // q = quat(0 + %i)
+    // q = quat(q)
+    // q = quat()
     //
     // See also
     //  quaternion
@@ -76,26 +84,43 @@ function q = quat(varargin)
         in = varargin(1)
         ty = get_type(in)
 
-        if ty == %vector then // quat(abcd)
-            if %fastmode then
-                q = tlist(["quat", "real", "imag"], in(1), in(2:4))
-            else
-                abcd = in
-
-                if length(abcd) == 4 then
-                    if get_type(abcd(1)) ~= %real || get_type(abcd(2)) ~= %real || get_type(abcd(3)) ~= %real || get_type(abcd(4)) ~= %real then
-                        error("quat(abcd): Argument checking failed for argument 1. The quaternion must have real components.")
+        if ty == %real then // quat(a)
+            q = tlist(["quat", "real", "imag"], in, [0, 0, 0])
+        elseif ty == %complex then // quat(ab)
+            q = tlist(["quat", "real", "imag"], real(in), [imag(in), 0, 0])
+        elseif ty == %vector then
+            select length(in)
+            case 2 then // quat(bc)
+                if ~%fastmode then
+                    if get_type(in(1)) ~= %real || get_type(in(2)) ~= %real then
+                        error("quat(bc): Argument checking failed for argument 1. The quaternion must have real components.")
                     end
-                else
-                    error("quat(abcd): Argument checking failed for argument 1. The quaternion must have 4 components.")
                 end
 
-                q = tlist(["quat", "real", "imag"], abcd(1), abcd(2:4))
+                q = tlist(["quat", "real", "imag"], 0, [in(1:2), 0])
+            case 3 then // quat(bcd)
+                if ~%fastmode then
+                    if get_type(in(1)) ~= %real || get_type(in(2)) ~= %real || get_type(in(3)) ~= %real then
+                        error("quat(bcd): Argument checking failed for argument 1. The quaternion must have real components.")
+                    end
+                end
+
+                q = tlist(["quat", "real", "imag"], 0, in)
+            case 4 then // quat(abcd)
+                if ~%fastmode then
+                    if get_type(in(1)) ~= %real || get_type(in(2)) ~= %real || get_type(in(3)) ~= %real || get_type(in(4)) ~= %real then
+                        error("quat(abcd): Argument checking failed for argument 1. The quaternion must have real components.")
+                    end
+                end
+
+                q = tlist(["quat", "real", "imag"], in(1), in(2:4))
+            else
+                error("quat(?): Argument checking failed for argument 1. A quaternion cannot have more than 4 components.")
             end
         elseif ty == %quat then // quat(q0)
             q = in
         else
-            error("quat(abcd | q0): Argument checking failed for argument 1. It can only be a vector or a quaternion.")
+            error("quat(abcd | q0): Argument checking failed for argument 1. It can only be a complex number, a vector or a quaternion.")
         end
     case 0 then // quat()
         q = tlist(["quat", "real", "imag"], 0, [0, 0, 0])

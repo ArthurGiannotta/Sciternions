@@ -7,14 +7,14 @@ function check_args(func, varargin)
     // Parameters
     // func: string, the syntax of the function
     // argi: array, the i-th argument received by the function
-    // typei: type array, the type that the i-th argument must be of
+    // typei: type array, the possible types of the i-th argument
     //
     // Description
     // Checks whether the types of the arguments of a function are valid, given a type checklist. For example, if you receive the error message "add(a, b, c): Argument checking failed for argument 2", it means the second argument 'b' of the function 'add' has an invalid type.
     //
     // Examples
-    // function result = add_reals(a, b)
-    //     check_args("add_numbers(a, b)", a, %real, b, %real)
+    // function result = add_numbers(a, b)
+    //     check_args("add_numbers(a, b)", a, [%real, %complex], b, [%real, %complex])
     //
     //     result = a + b
     // endfunction
@@ -29,14 +29,32 @@ function check_args(func, varargin)
 
     for i = 2:2:n do
         type1 = get_type(varargin(i - 1))
-        type2 = varargin(i)
+        types2 = varargin(i)
 
-        if get_type(type2) ~= %type then
-            error(func + ": Invalid checking for argument " + string(i / 2) + " (invalid type).")
+        if get_type(types2) ~= %list then
+            types2 = list(types2)
         end
 
-        if type1 ~= type2 then
-            error(func + ": Argument checking failed for argument " + string(i / 2) + ". Type is " + string(type1) + ", but must be " + string(type2) + ".")
+        failed = %t
+        for type2 = types2 do
+            if get_type(type2) ~= %type then
+                error(func + ": Invalid checking for argument " + string(i / 2) + " (invalid type).")
+            end
+
+            if type1 == type2 then
+                failed = %f
+
+                break
+            end
+        end
+
+        if failed then
+            types = ""
+            for ty = types2 do
+                types = types + string(ty) + " or "
+            end
+
+            error(func + ": Argument checking failed for argument " + string(i / 2) + ". Type is " + string(type1) + ", but can be " + part(types, 1:$-4) + ".")
         end
     end
 endfunction

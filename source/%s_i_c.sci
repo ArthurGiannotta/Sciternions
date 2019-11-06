@@ -4,6 +4,19 @@ function l = %s_i_c(varargin)
     // Syntax
     //   l = %s_i_c(varargin)
     //
+    // Examples
+    // v(2) = 0
+    // v(1) = ""
+    //
+    // function [c, s] = func()
+    //     c = "";
+    //     s = 0
+    // endfunction
+    // [l(1), l(2)] = func()
+    //
+    // See also
+    //  %c_i_s
+    //
     // Authors
     //  Arthur Clemente Giannotta ;
 

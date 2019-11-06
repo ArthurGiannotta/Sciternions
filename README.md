@@ -1,2 +1,2 @@
 # sciternions
-A quaternions library for SciLab
+A quaternions library for Scilab

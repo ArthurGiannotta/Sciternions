@@ -1,5 +1,5 @@
 function [ty, subty] = type(variable)
-    // Overloaded version of the SciLab 'type' function.
+    // Overloaded version of the Scilab 'type' function.
     //
     // Syntax
     //   [ty, subty] = type(variable)

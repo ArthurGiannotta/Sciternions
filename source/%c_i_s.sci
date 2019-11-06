@@ -5,11 +5,20 @@ function l = %c_i_s(varargin)
     //   l = %c_i_s(varargin)
     //
     // Examples
-    // function [s, c] = func() s = 0; c = ""; endfunction
+    // v(2) = ""
+    // v(1) = 0
+    //
+    // function [s, c] = func()
+    //     s = 0
+    //     c = "";
+    // endfunction
     // [l(1), l(2)] = func()
     //
+    // See also
+    //  %s_i_c
+    //
     // Authors
-    //  Arthur Clemente Giannotta ; 
+    //  Arthur Clemente Giannotta ;
 
     s = varargin($)
 

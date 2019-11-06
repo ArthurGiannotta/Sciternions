@@ -8,6 +8,9 @@ function b = %type_n_type(type1, type2)
     // get_type(0) ~= get_type([0, 0]) // true
     // get_type(0) ~= get_type(%pi) // false
     //
+    // See also
+    //  %type_o_type
+    //
     // Authors
     //  Arthur Clemente Giannotta ;
 

@@ -32,11 +32,11 @@ function q = rquat(t, n)
             error("rquat(radians, axis): Argument checking failed for argument 2. The axis must have 3 components.")
         elseif get_type(n(1)) ~= %real || get_type(n(2)) ~= %real || get_type(n(3)) ~= %real then
             error("rquat(radians, axis): Argument checking failed for argument 2. The axis must have real components.")
-        elseif abs(norm(n) - 1) > %epsilon then
+        elseif unequal(norm(n), 1) then
             warning("rquat(radians, axis): Normalizing vector. The axis must be a UNIT vector.")
             n = n / norm(n)
         end
     end
 
-    a = .5*t; q = tlist(["quat", "real", "imag"], cos(a), sin(a) * n)
+    a = .5*t; q = tlist(["quat", "real", "imag", "angle", "axis"], cos(a), sin(a) * n, a, n)
 endfunction

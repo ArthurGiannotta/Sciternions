@@ -2,23 +2,31 @@ function r = %s_s_quat(s, q)
     // Complex-quaternion and vector-quaternion subtraction.
     //
     // Syntax
-    //   result = %s_s_quat(s, quat)
+    //   result = %s_s_quat(s, q)
     //
     // Parameters
-    // result: quaternion, the difference between the quaternion and the complex number or the vector
-    // s: real|complex|vector, the first operand
-    // quat: quaternion, the second operand
+    // result: quaternion, the difference between the operands
+    // s: complex|vector, the first operand
+    // q: quaternion, the second operand
     //
     // Description
     // The difference between a complex number or a vector and a quaternion is defined as the quaternion which has each component equal to the difference between the operands components.
-    // <latex>$(A + B\ i) - (a,\ b,\ c,\ d) = (A-a,\ B-b,\ c,\ d)$</latex>
-    // <latex>$[A,\ B] - (a,\ b,\ c,\ d) = (A-a,\ B-b,\ C,\ D)$</latex>
-    // <latex>$[B,\ C,\ D] - (a,\ b,\ c,\ d) = (a,\ B-b,\ C-c,\ D-d)$</latex>
+    //
+    // <latex>$(A + B\ i) - (a,\ b,\ c,\ d) = (A-a,\ B-b,\ -c,\ -d)$</latex>
+    //
+    // <latex>$[B,\ C] - (a,\ b,\ c,\ d) = (-a,\ B-b,\ C-c,\ -d)$</latex>
+    //
+    // <latex>$[B,\ C,\ D] - (a,\ b,\ c,\ d) = (-a,\ B-b,\ C-c,\ D-d)$</latex>
+    //
     // <latex>$[A,\ B,\ C,\ D] - (a,\ b,\ c,\ d) = (A-a,\ B-b,\ C-c,\ D-d)$</latex>
     //
     // Examples
-    // 1 - quat(0, 0, 0, 0) // quat(1, 0, 0, 0)
-    // (1 + %i) - quat(0, 1, 1, -1) // quat(1, 0, -1, 1)
+    // q = quat(1, 1, 1, 1)
+    // 1 - q // quat(0, -1, -1, -1)
+    // (1 + %i) - q // quat(0, 0, -1, -1)
+    // [1, 1] - q // quat(-1, 0, 0, -1)
+    // [1, 1, 1] - q // quat(-1, 0, 0, 0)
+    // [1, 1, 1, 1] - q // quat(0, 0, 0, 0)
     //
     // See also
     //  quat
@@ -30,7 +38,7 @@ function r = %s_s_quat(s, q)
 
     if ~%fastmode then
         if get_type(s).data(2) > %vector.data(2) then
-            error("%s_s_quat(s, quat): Can''t subtract a quaternion from a matrix/hypermatrix.")
+            error("%s_s_quat(s, q): Argument checking failed for argument 1. Cannot subtract a quaternion from a matrix/hypermatrix.")
         end
     end
 
@@ -38,12 +46,12 @@ function r = %s_s_quat(s, q)
     case 1 then
         r = tlist(["quat", "real", "imag"], real(s) - q.real, [imag(s), 0, 0] - q.imag)
     case 2 then
-        r = tlist(["quat", "real", "imag"], s(1) - q.real, [s(2), 0, 0] - q.imag)
+        r = tlist(["quat", "real", "imag"], -q.real, [s(1:2), 0] - q.imag)
     case 3 then
-        r = q; r.imag = s - r.imag
+        r = tlist(["quat", "real", "imag"], -q.real, s - q.imag)
     case 4 then
         r = tlist(["quat", "real", "imag"], s(1) - q.real, s(2:4) - q.imag)
     else
-        error("%s_s_quat(s, quat): Can''t subtract a quaternion from a vector with size bigger than 4.")
+        error("%s_s_quat(s, q): Argument checking failed for argument 1. Cannot subtract a quaternion from a vector with size greater than 4.")
     end
 endfunction

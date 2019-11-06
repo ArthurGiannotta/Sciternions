@@ -14,7 +14,7 @@ function t = time(instruction, n)
     //
     // Examples
     // // Is it faster to execute 'sqrt(2)' or to do '2^0.5'?
-    // time('sqrt(2)', 1000000) > time('2^0.5', 1000000) // usually true, 2^0.5 should be faster
+    // time('sqrt(2)', 1000000) > time('2^0.5', 1000000) // Usually true, 2^0.5 should be faster
     //
     // See also
     //  timer

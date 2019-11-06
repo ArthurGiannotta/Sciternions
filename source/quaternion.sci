@@ -3,8 +3,11 @@ function q = quaternion(varargin)
     //
     // Syntax
     //   q = quaternion(a, b, c, d)
-    //   q = quaternion(a, v)
+    //   q = quaternion(a, bcd)
     //   q = quaternion(abcd)
+    //   q = quaternion(bcd)
+    //   q = quaternion(bc)
+    //   q = quat(ab)
     //   q = quaternion(q0)
     //   q = quaternion()
     //
@@ -14,8 +17,10 @@ function q = quaternion(varargin)
     // b: real, the first imaginary part
     // c: real, the second imaginary part
     // d: real, the third imaginary part
-    // v: vector, the imaginary part
     // abcd: vector, the real and imaginary parts
+    // bcd: vector, the imaginary part
+    // bc: vector, the first and second imaginary parts
+    // ab: complex, the real and first imaginary parts
     // q0: quaternion, the quaternion to copy
     //
     // Description

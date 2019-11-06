@@ -1,15 +1,15 @@
-function l = %s_c_c(varargin)
-    // Complex-string vector creation (line).
+function l = %c_c_s(varargin)
+    // String-complex vector creation (line).
     //
     // Syntax
-    //   l = %s_c_c(s, c)
+    //   l = %c_c_s(c, s)
     //
     // Examples
-    // l = [0, ""]
+    // l = ["", 0]
     //
     // See also
-    //  %s_f_c
-    //  %c_c_s
+    //  %c_f_s
+    //  %s_c_c
     //
     // Authors
     //  Arthur Clemente Giannotta ;

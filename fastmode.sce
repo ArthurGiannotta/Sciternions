@@ -1,8 +1,8 @@
-// This script applies the SciTernions fastmode when compiling the library
+// This script applies the Sciternions fastmode when compiling the library
 // Fastmode eliminates argument checking and make optimization changes
 
 if ~exists("build_dir") || ~exists("source_dir") || ~exists("fastmode") then
-    error("The file ""fastmode.sce"" cannot be executed manually. Please run ""build.sce"" to compile the SciTernions library.")
+    error("The file ""fastmode.sce"" cannot be executed manually. Please run ""build.sce"" to compile the Sciternions library.")
 end
 
 scripts = listfiles(source_dir)'

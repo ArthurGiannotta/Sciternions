@@ -19,6 +19,9 @@ function out = alias(func, args)
     //
     // See also
     //  quaternion
+    //  rotation_quaternion
+    //  rotation_quaternion_degrees
+    //  rotate_using_quaternion
     //
     // Authors
     //  Arthur Clemente Giannotta ;
@@ -47,7 +50,7 @@ function out = alias(func, args)
                 str = str + "args(" + string(i) + "),"
             end
             str = part(str, 1:$-1) + ")"
-    
+
             execstr(str)
         end
     end
