@@ -28,21 +28,39 @@ function setup_sciternions(arguments)
     end
     clear("ptr")
 
+    // Aliases for boolean types
+    %false = %f
+    %true = %t
+
     // Aliases for types of variables
+    %boolean = get_type(%true)
     %real = get_type(0)
     %complex = get_type(%i)
     %vector = get_type([0, 0])
     %matrix = get_type([0, 0 ; 0, 0])
     %hypermatrix = get_type(matrix([0, 0], 1, 1, 2))
+    %euler = get_type(euler())
     %quat = get_type(quat())
     %quaternion = %quat
     %list = get_type(list())
     %string = get_type("")
     %type = get_type(%real)
+    %function = get_type(setup_sciternions)
 
-    // Aliases for boolean types
-    %false = %f
-    %true = %t
+    // Aliases for the cartesian origin and each canonical axis
+    %O = [0; 0; 0]
+    %X = [1; 0; 0]
+    %Y = [0; 1; 0]
+    %Z = [0; 0; 1]
+
+    // Aliases for the units associated with each imaginary part
+    %1 = quat(1, [0; 0; 0])
+    %I = quat(0, [1; 0; 0])
+    %J = quat(0, [0; 1; 0])
+    %K = quat(0, [0; 0; 1])
+
+    // Aliases for common mathematical constants
+    %2pi = 2 * %pi
 
     // Fastmode configuration (chosen at compilation time)
     if %fastmode then
@@ -64,6 +82,12 @@ function setup_sciternions(arguments)
     else
         %epsilon = 2 * %eps
     end
+
+    // A very small value that still can be recognized by scilab as non-zero
+    %superepsilon = %eps ** 20 * 0.0000000001
+
+    // A very big value that still can be recognized by scilab as non-infinite
+    %superomega = (1 / %eps) ** 19 * 10000000000
 
     // %fastmode = exists('fastmode') && fastmode // Deprecated, fastmode is implemented at compilation time
 

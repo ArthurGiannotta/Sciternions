@@ -24,9 +24,9 @@ function r = %s_a_quat(s, q)
     // q = quat(-1, -1, -1, -1)
     // 1 + q // quat(0, -1, -1, -1)
     // (1 + %i) + q // quat(0, 0, -1, -1)
-    // [1, 1] + q // quat(-1, 0, 0, -1)
-    // [1, 1, 1] + q // quat(-1, 0, 0, 0)
-    // [1, 1, 1, 1] + q // quat(0, 0, 0, 0)
+    // [1; 1] + q // quat(-1, 0, 0, -1)
+    // [1; 1; 1] + q // quat(-1, 0, 0, 0)
+    // [1; 1; 1; 1] + q // quat(0, 0, 0, 0)
     //
     // See also
     //  quat
@@ -37,18 +37,29 @@ function r = %s_a_quat(s, q)
     //  Arthur Clemente Giannotta ;
 
     if ~%fastmode then
-        if get_type(s).data(2) > %vector.data(2) then
-            error("%s_a_quat(s, q): Argument checking failed for argument 1. Cannot add a matrix/hypermatrix with a quaternion.")
+        ss = size(s)
+
+        if length(ss) == 2 then
+            if ss(2) ~= 1 then
+                if ss(1) == 1 then
+                    warning("%s_a_quat(s, q): Transposing the augend, which should not be a row vector.")
+                    s = s'
+                else
+                    error("%s_a_quat(s, q): Argument checking failed for argument 1. Cannot add a matrix with a quaternion.")
+                end
+            end
+        else
+            error("%s_a_quat(s, q): Argument checking failed for argument 1. Cannot add a hypermatrix with a quaternion.")
         end
     end
 
     select length(s)
     case 1 then
-        r = tlist(["quat", "real", "imag"], real(s) + q.real, [imag(s), 0, 0] + q.imag)
+        r = tlist(["quat", "real", "imag"], real(s) + q.real, [imag(s); 0; 0] + q.imag)
     case 2 then
-        r = q; r.imag = [s(1:2), 0] + r.imag
+        r = tlist(["quat", "real", "imag"], q.real, [s; 0] + q.imag)
     case 3 then
-        r = q; r.imag = s + r.imag
+        r = tlist(["quat", "real", "imag"], q.real, s + q.imag)
     case 4 then
         r = tlist(["quat", "real", "imag"], s(1) + q.real, s(2:4) + q.imag)
     else

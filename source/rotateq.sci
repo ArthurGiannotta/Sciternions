@@ -12,15 +12,15 @@ function r = rotateq(x, q)
     // Description
     // The rotation of an object 'x' using a rotation quaternion 'q' is defined to be a function given by the following quaternion product:
     //
-    // <latex>$Rot(x, q) \triangleq q \circ x \circ \bar{q}$</latex>
+    // <latex>$Rot(x, q) \triangleq \bar{q} \circ x \circ q$</latex>
     //
-    // To automatically get the result in its vector form, you can use one of the other rotation functions 'rotate_using_quaternion', 'rotateq2d' or 'rotateq3d'.
+    // To get the result in its vector form, use one of the other rotation functions 'rotateq2d' or 'rotateq3d'. To get the result in its reduced form, use 'rotate_using_quaternion'.
     //
     // Examples
-    // x_axis = [1, 0, 0]; y_axis = [0, 1, 0]; z_axis = [0, 0, 1]
-    // y = rotateq(x_axis, rquatd(90, z_axis))
+    // x_axis = [1; 0; 0]; y_axis = [0; 1; 0]; z_axis = [0; 0; 1]
+    // y = rotateq(x_axis, rquatd(-90, z_axis)) // The negative sign means counterclockwise
     // if equal(y, y_axis) then
-    //     display("It worked!!! Rotating the x axis 90 degrees around the z axis gives the y axis.")
+    //     display("It worked!!! Rotating the x axis 90 degrees counterclockwise around the z axis gives the y axis.")
     // end
     //
     // See also
@@ -40,12 +40,10 @@ function r = rotateq(x, q)
 
         if length(x) > 4 then
             error("rotateq(x, q): Argument checking failed for argument 1. Cannot rotate a vector with size greater than 4.")
-        end
-
-        if ~isfield(q, "axis") then
-            warning("rotateq(x, q): Performing dubious rotation. The quaternion should be a ROTATION quaternion.")
+        elseif unequal(norm(q), 1) then
+            warning("rotateq(x, q): Performing dubious rotation. The quaternion should be a unit quaternion.")
         end
     end
 
-    r = q * x * ~q
+    r = ~q * x * q
 endfunction

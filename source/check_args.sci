@@ -38,7 +38,7 @@ function check_args(func, varargin)
         failed = %t
         for type2 = types2 do
             if get_type(type2) ~= %type then
-                error(func + ": Invalid checking for argument " + string(i / 2) + " (invalid type).")
+                error(func + ": Invalid type checking for argument " + string(i / 2) + " (invalid type).")
             end
 
             if type1 == type2 then
@@ -49,12 +49,22 @@ function check_args(func, varargin)
         end
 
         if failed then
+            try
+                arg = strcat(strcat(string(varargin(i - 1)), ", ", "c"), "; ")
+            catch
+                if type1 == %function then
+                    arg = "function"
+                else
+                    error(func + ": Invalid argument checking (unimplemented stringification for type " + string(type1) + ").")
+                end
+            end
+
             types = ""
             for ty = types2 do
                 types = types + string(ty) + " or "
             end
 
-            error(func + ": Argument checking failed for argument " + string(i / 2) + ". Type is " + string(type1) + ", but can be " + part(types, 1:$-4) + ".")
+            error(func + ": Argument checking failed for argument " + string(i / 2) + " -> [" + arg + "]. Type is " + string(type1) + ", but can be " + part(types, 1:$-4) + ".")
         end
     end
 endfunction

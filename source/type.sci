@@ -17,6 +17,7 @@ function [ty, subty] = type(variable)
     // [ty, subty] = type(1) // ty = 1, subty = 0
     // [ty, subty] = type(1 + %i) // ty = 1, subty = 1
     // [ty, subty] = type([1, 0]]) // ty = 1, subty = 2
+    // [ty, subty] = type([1; 0]]) // ty = 1, subty = 2
     // [ty, subty] = type([1, 0; 0, 1]]) // ty = 1, subty = 3
     //
     // See also
@@ -37,6 +38,7 @@ function [ty, subty] = type(variable)
             end
         else
             s = size(variable)
+
             if length(s) == 2 then
                 if s(1) == 1 || s(2) == 1 then
                     subty = 2 // vector

@@ -49,8 +49,8 @@ function r = %quat_m_quat(p, q)
         B = V(1); C = V(2); D = V(3)
         b = v(1); c = v(2); d = v(3)
 
-        r = tlist(["quat", "real", "imag"], A * a - B * b - C * c - D * d, [A * b + B * a + C * d - D * c, A * c + C * a - B * d + D * b, A * d + D * a + B * c - C * b])
+        r = tlist(["quat", "real", "imag"], A * a - B * b - C * c - D * d, [A * b + B * a + C * d - D * c; A * c + C * a - B * d + D * b; A * d + D * a + B * c - C * b])
     else
-        r = tlist(["quat", "real", "imag"], A * a - V * v', A * v + a * V + cross(V, v))
+        r = tlist(["quat", "real", "imag"], A * a - V' * v, A * v + a * V + cross(V, v))
     end
 endfunction

@@ -19,6 +19,13 @@ function r = reduce(q)
     //
     // <latex>$(a,\ b,\ c,\ d) = [a,\ b,\ c,\ d]$</latex>
     //
+    // Examples
+    // reduce(quat(1, 0, 0, 0)) // 1
+    // reduce(quat(1, 1, 0, 0)) // 1 + %i
+    // reduce(quat(0, 1, 1, 0)) // [1; 1]
+    // reduce(quat(0, 1, 1, 1)) // [1; 1; 1]
+    // reduce(quat(1, 1, 1, 1)) // [1; 1; 1; 1]
+    //
     // See also
     //  quat
     //
@@ -31,25 +38,25 @@ function r = reduce(q)
 
     a = q.real; v = q.imag
 
-    if abs(a) <= %epsilon then // (0, ?, ?, ?)
-        if abs(v(3)) <= %epsilon then // (0, ?, ?, 0)
-            if abs(v(2)) <= %epsilon then // (0, ?, 0, 0) = b * %i
+    if abs(a) <= %epsilon then // (0; ?; ?; ?)
+        if abs(v(3)) <= %epsilon then // (0; ?; ?; 0)
+            if abs(v(2)) <= %epsilon then // (0; ?; 0; 0) = b * %i
                 r = v(1) * %i
-            else // (0, ?, c, 0) = [b, c]
+            else // (0; ?; c; 0) = [b; c]
                 r = v(1:2)
             end
-        else // (0, ?, ?, d) = [b, c, d]
+        else // (0; ?; ?; d) = [b; c; d]
             r = v
         end
-    else // (a, ?, ?, ?)
-        if abs(v(3)) <= %epsilon then // (a, ?, ?, 0)
-            if abs(v(2)) <= %epsilon then // (a, ?, 0, 0) = a + b * %i
+    else // (a; ?; ?; ?)
+        if abs(v(3)) <= %epsilon then // (a; ?; ?; 0)
+            if abs(v(2)) <= %epsilon then // (a; ?; 0; 0) = a + b * %i
                 r = a + v(1) * %i
-            else // (a, ?, c, 0) = [a, b, c, d]
-                r = [a, v]
+            else // (a; ?; c; 0) = [a; b; c; d]
+                r = [a; v]
             end
-        else // (a, ?, ?, d) = [a, b, c, d]
-            r = [a, v]
+        else // (a; ?; ?; d) = [a; b; c; d]
+            r = [a; v]
         end
     end
 endfunction

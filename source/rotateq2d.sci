@@ -1,5 +1,5 @@
 function r = rotateq2d(x, q)
-    // 2D rotation using quaternion.
+    // Two-dimensional rotation using quaternion.
     //
     // Syntax
     //   result = rotateq2d(x, q)
@@ -10,20 +10,21 @@ function r = rotateq2d(x, q)
     // q: quaternion, the rotation quaternion
     //
     // Description
-    // The two-dimensional rotation of a vector 'x' using a rotation quaternion 'q' is defined to be a function given by the first two imaginary parts of the following quaternion product:
+    // The rotation of a two-dimensional vector 'x' using a rotation quaternion 'q' is defined to be a function given by the first two imaginary parts of the following quaternion product:
     //
     // <latex>$\overrightarrow{Rot}_(\vec{x}, q) = \overrightarrow{Rot}([a, b], q) \triangleq \overrightarrow{Im}(\bar{q} \circ (0, a, b, 0) \circ q)$</latex>
     //
-    // To get the result in its quaternion form, you can use the function 'rotateq'.
+    // To rotate three-dimensional vectors, use 'rotateq3d' instead. To get the result in its quaternion form, use 'rotateq'. To get the result in its reduced form, use 'rotate_using_quaternion'.
     //
     // Examples
-    // x_axis = [1, 0]; y_axis = [0, 1]; z_axis = [0, 0, 1]
-    // y = rotateq2d(x_axis, rquatd(90, z_axis))
+    // x_axis = [1; 0]; y_axis = [0; 1]; z_axis = [0; 0; 1]
+    // y = rotateq2d(x_axis, rquatd(-90, z_axis)) // The negative sign means counterclockwise
     // if equal(y, y_axis) then
-    //     display("It worked!!! Rotating the x axis 90 degrees around the z axis gives the y axis.")
+    //     display("It worked!!! Rotating the x axis 90 degrees counterclockwise around the z axis gives the y axis.")
     // end
     //
     // See also
+    //  rotate_using_quaternion
     //  rotateq
     //  rotateq3d
     //  rquat
@@ -34,38 +35,24 @@ function r = rotateq2d(x, q)
     // Authors
     //  Arthur Clemente Giannotta ;
 
-    if fastmode then
-        A = q.real; V = q.imag
-        B = V(1); C = V(2); D = V(3)
-        b = s(1); c = s(2)
+    if %fastmode then
+        A = q.real; D = q.imag(3)
+        b = x(1); c = x(2)
 
-        r = tlist(["quat", "real", "imag"], - B * b - C * c, [A * b - D * c, A * c + D * b, B * c - C * b])
-
-        A = p.real; a = q.real; V = p.imag; v = q.imag
-
-        B = V(1); C = V(2); D = V(3)
-        b = v(1); c = v(2); d = v(3)
-
-        r = tlist(["quat", "real", "imag"], A * a - B * b - C * c - D * d, [A * b + B * a + C * d - D * c, A * c + C * a - B * d + D * b, A * d + D * a + B * c - C * b])
+        r = [(A * A - D * D) * b + 2 * A * D * c; (A * A - D * D) * c - 2 * A * D * b]
     else
         check_args("rotateq2d(x, q)", x, %vector, q, %quat)
 
         if length(x) ~= 2 then
-            error("rotateq2d(x, q): Argument checking failed for argument 1. Cannot 2D rotate a vector which is not two-dimensional.")
+            error("rotateq2d(x, q): Argument checking failed for argument 1. Cannot two-dimensionally rotate a vector that is not two-dimensional.")
         end
 
-        r = q * x * ~q
-
-        if isfield(q, "axis") then
-            // check [0, 0, 1 or 0, 0,-1]
-        else
-            warning("rotateq2d(x, q): Performing dubious rotation. The quaternion should be a ROTATION quaternion.")
-
-            if abs(r.imag(3)) > %epsilon then
-                error("rotateq2d(x, q): Invalid 2D rotation (the rotation quaternion does not have a valid axis of rotation).")
-            end
+        if unequal(q.imag(1:2), [0; 0]) then
+            error("rotateq2d(x, q): Invalid two-dimensional rotation. The rotation quaternion axis can only be [0; 0; 1] or [0; 0; -1] .")
+        elseif unequal(norm(q), 1) then
+            warning("rotateq2d(x, q): Performing dubious rotation. The quaternion should be a unit quaternion.")
         end
 
-        
+        r = (~q * x * q).imag(1:2)
     end
 endfunction
